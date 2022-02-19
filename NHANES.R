@@ -53,13 +53,27 @@ sqldf("SELECT COUNT(Respondent_sequence_number) AS num_refused
 #5. What is the mean LDL level (mg/dL) for men and women?  Use column alias mean_ldl and round results to 
 #   1 decimal place.  
     
-
+sqldf("SELECT d.Gender, ROUND(AVG(t.LDL_cholesterol_mg_dL), 1) AS mean_ldl
+      FROM nhanes_demographics AS d 
+          LEFT JOIN nhanes_triglycerides AS t 
+          ON d.Respondent_sequence_number = t.Respondent_sequence_number
+      GROUP BY d.Gender")
     
 #6. Display the minimum and maximum triglyceride levels (mmol/L) for each race.  Use column aliases min_tri and max_tri.
   
-
+sqldf("SELECT d.Race_Hispanic_origin_w_NH_Asian AS race, MIN(t.Triglyceride_mmol_L) AS min_tri, MAX(t.Triglyceride_mmol_L) AS max_tri
+      FROM nhanes_demographics AS d 
+          LEFT JOIN nhanes_triglycerides AS t 
+          ON d.Respondent_sequence_number = t.Respondent_sequence_number
+      GROUP BY race")
     
 #7. Create a new data frame that can be used for future analyses that combines all demographic data and any 
 #   matching triglyceride data.  Call it demo_tri.
     
+table2 <- sqldf("SELECT * 
+                FROM nhanes_demographics AS d 
+                      INNER JOIN nhanes_triglycerides AS t 
+                      ON d.Respondent_sequence_number = t.Respondent_sequence_number")
+
+      
 
