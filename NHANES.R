@@ -47,7 +47,8 @@ sqldf("SELECT COUNT(Respondent_sequence_number) AS preg_at_screen
     
 sqldf("SELECT COUNT(Respondent_sequence_number) AS num_refused 
        FROM nhanes_demographics
-       WHERE Annual_Household_Income = 99 ")
+       WHERE Gender = 1 AND Annual_Household_Income = 77
+       GROUP BY Gender")
 
 
 #5. What is the mean LDL level (mg/dL) for men and women?  Use column alias mean_ldl and round results to 
@@ -72,7 +73,7 @@ sqldf("SELECT d.Race_Hispanic_origin_w_NH_Asian AS race, MIN(t.Triglyceride_mmol
     
 table2 <- sqldf("SELECT * 
                 FROM nhanes_demographics AS d 
-                      INNER JOIN nhanes_triglycerides AS t 
+                      LEFT JOIN nhanes_triglycerides AS t 
                       ON d.Respondent_sequence_number = t.Respondent_sequence_number")
 
       
